@@ -18,29 +18,31 @@ def create():
         return f"An Error Occured: {e}"
 
 
-def spam( spam = "1"):
-    data = config.db.get()
-    return json.dumps(data.val())
+def spam():
+    data = config.db.collection(u"emailwa").where(u'spam',u'==',1).stream()
+    return data
 
 @app.route('/spam', methods=['GET'])
 def get_spam():
     response = spam()
+    my_dict = [ el.to_dict() for el in response ]
     if response != "null":
-        return render_template('spam.html', saves=response)
+        return render_template('spam.html', saves=my_dict)
     else:
         return make_response(jsonify({'error': 'Not found'}), 404)
 
 
-def inbox( spam = "0"):
-    data = config.db.get()
-    return json.dumps(data.val())
+def inbox():
+    data = config.db.collection(u"emailwa").where(u'spam',u'==',0).stream()
+    return data
 
 @app.route('/inbox', methods=['GET'])
 def get_inbox():
-    # response = inbox()
-    response = { "abc" : "abc"}
+    response = inbox()
+    my_dict = [ el.to_dict() for el in response ]
+    print(my_dict)
     if response != "null":
-        return render_template('inbox.html', saves=response)
+        return render_template('inbox.html', saves=my_dict)
     else:
         return make_response(jsonify({'error': 'Not found'}), 404)
 
