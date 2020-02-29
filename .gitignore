@@ -1,7 +1,7 @@
 # Byte-compiled / optimized / DLL files
-__pycache__/
-flask_api/__pycache__/
-flask_api/app/__pycache__/
+__pycache__\
+flask_api\__pycache__\
+flask_api\app\__pycache__\
 *.py[cod]
 *$py.class
 
@@ -37,7 +37,7 @@ MANIFEST
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
-flask_api/app/credentials.txt
+flask_api\app\credentials.txt
 
 # Unit test / coverage reports
 htmlcov/

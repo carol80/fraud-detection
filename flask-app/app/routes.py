@@ -1,12 +1,15 @@
 import pyrebase
 from flask import render_template, request, redirect, session
-from app import app
-import os
 
-with open(r'C:\Users\Lenovo\Downloads\Documents\GitHub\fraud-detection\flask-api\app\credentials.txt','r') as f:
+import os
+from flask import Flask
+
+app = Flask(__name__)
+
+with open('credentials.txt','r') as f:
     f = f.read()
     print(f)
-    apiKey, authDomain, databaseURL, projectId, storageBucket, messagingSenderId, appId  = f.split('')
+    apiKey, authDomain, databaseURL, projectId, storageBucket, messagingSenderId, appId  = f.split('\n')
 
 
 
