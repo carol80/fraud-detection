@@ -76,14 +76,10 @@ def get_messages(service, messages, old_id):
                 break
             counter += 1
 
-    check_new_mail(service, old_id)        
+    check_new_mail(service, old_id)
 
-def main():
-    
+def exec_code():
     service = authenticate()
 
     message_list, old_id = get_messages_list(service)
     get_messages(service, message_list, old_id)
-    
-if __name__ == '__main__':
-    main()
