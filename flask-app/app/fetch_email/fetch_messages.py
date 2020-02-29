@@ -1,7 +1,9 @@
 from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
+from fetch_email import fetch_messages,cloud,config
 import time
+import json
 import datetime
 from fetch_email import config
 
@@ -102,6 +104,9 @@ def get_messages(service, messages, old_id):
             if counter == 1:
                 break
             counter += 1
+
+            cloud.cloud(from_addr)
+            print(from_addr)
     check_new_mail(service, old_id)
 
 def exec_code():

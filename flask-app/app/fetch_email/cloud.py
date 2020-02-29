@@ -1,4 +1,5 @@
 import pika
+import json
 
 def cloud(sender):
     credentials = pika.PlainCredentials('admin', 'Prince@99')
@@ -9,6 +10,8 @@ def cloud(sender):
     channel = connection.channel()
 
     channel.queue_declare(queue='json')
+
+    print(sender)
 
     data = {
         "from": sender

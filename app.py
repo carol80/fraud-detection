@@ -19,7 +19,7 @@ def get_predict(text):
 			vectorize_message = vectorizer.transform([text])
 			predict = model.predict(vectorize_message)[0]
 		else:
-			predict = 2
+			predict = 1
 	except BaseException as inst:
 		error = str(type(inst).__name__) + ' ' + str(inst)
 	
