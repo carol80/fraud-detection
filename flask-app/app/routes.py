@@ -36,6 +36,27 @@ config = {
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 
+def get_predict(text):
+	try:
+		if len(text) > 0:
+			vectorize_message = vectorizer.transform([text])
+			predict = model.predict(vectorize_message)[0]
+		else:
+			predict = 2
+	except BaseException as inst:
+		error = str(type(inst).__name__) + ' ' + str(inst)
+	
+	return predict
+
+# train model
+model = pickle.load(open('models/PassiveAggressiveClassifier_with_TfidfVectorizer.pkl', 'rb'))
+vectorizer = pickle.load(open('vectors/TfidfVectorizer.pkl', 'rb'))
+
+
+
+
+
+
 @app.route('/')
 @app.route('/index', methods=['GET', 'POST'])
 def index():
@@ -91,5 +112,43 @@ def home():
     return render_template('home.html')
 
 
+
+def spam(mails = "", spam = "1"):
+    data = db.get()
+    return json.dumps(data.val())
+
+@app.route('/spam', methods=['GET'])
+def get_spam():
+    response = spam()
+    if response != "null":
+        return response
+    else:
+        return make_response(jsonify({'error': 'Not found'}), 404)
+
+
+def inbox(mails = "", spam = "0"):
+    data = db.get()
+    return json.dumps(data.val())
+
+@app.route('/inbox', methods=['GET'])
+def get_inbox():
+    response = inbox()
+    if response != "null":
+        return response
+    else:
+        return make_response(jsonify({'error': 'Not found'}), 404)
+
+def putMail(name):
+    db.child(name).set("")
+
+@app.route('/', methods=['POST'])
+def create_mail():
+    if not request.json or not 'mail' in request.json:
+        abort(400)
+    putMail(request.json['mail'])
+    return jsonify({'catalogo': request.json['catalogo']}), 201
+
+
+
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, use_reloader=True, threaded=True)

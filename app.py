@@ -22,20 +22,21 @@ app = Flask(__name__)
 
 
 # train model
-model = pickle.load(open('classification/models/PassiveAggressiveClassifier_with_TfidfVectorizer.pkl', 'rb'))
-vectorizer = pickle.load(open('classification/vectors/TfidfVectorizer.pkl', 'rb'))
+model = pickle.load(open('models/PassiveAggressiveClassifier_with_TfidfVectorizer.pkl', 'rb'))
+vectorizer = pickle.load(open('vectors/TfidfVectorizer.pkl', 'rb'))
 
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['PUT'])
 def main():
 	data = request.get_json()
 	body = data['body']
 	predict = get_predict(body)
+	data['spam'] = predict
 	response = app.response_class(
-        response=json.dumps(predict),
+        response=json.dumps(data),
         status=200,
         mimetype='application/json'
     )
-	return response
+	
 
 if __name__ == '__main__':
 	app.run(debug=True, use_reloader=True, threaded=True)
