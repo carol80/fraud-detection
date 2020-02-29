@@ -2,6 +2,7 @@ from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
 import time
+import datetime
 
 
 SCOPES = 'https://www.googleapis.com/auth/gmail.readonly'
@@ -69,17 +70,33 @@ def get_messages(service, messages, old_id):
     if not messages:
         print ("No messages found.")
     else:
+        
         print ("Message snippets:")
         for message in messages:
             msg = service.users().messages().get(userId='me', id=message['id']).execute()
+            
+            date_time = datetime.datetime.fromtimestamp(int(msg['internalDate'])/1000.0).strftime('%Y-%m-%d %H:%M:%S')
+            
+            header = msg['payload']['headers']
+            
+            for obj in header:
+                if obj['name'] == 'From':
+                    from_addr = obj['value']
+                elif obj['name'] == 'To':
+                    to_adr = obj['value']
+                elif obj['name'] == 'Subject':
+                    subj = obj['value']
+
             json_format = {
-                "time":"",
-                "from":"",
-                "to":"",
+                "time":date_time,
+                "from":from_addr,
+                "to":to_adr,
+                "subject":subj,
                 "body": msg['snippet']
                 }
-            emails.document().set(json_format)  
-            print (msg['snippet'])
+
+            emails.document().set(json_format)
+            #print(json_format)
 
             if counter == 1:
                 break
@@ -87,4 +104,4 @@ def get_messages(service, messages, old_id):
     check_new_mail(service, old_id)
 
 def exec_code():
-    service = authenticate()
+    service = authenticate() 
