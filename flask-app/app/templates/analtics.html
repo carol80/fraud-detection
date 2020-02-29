@@ -1,167 +1,248 @@
-<script src="https://www.amcharts.com/lib/3/ammap.js"></script>
-<script src="https://www.amcharts.com/lib/3/maps/js/worldLow.js"></script>
-<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
-<div id="chartdiv"></div>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="js/makeChart.js"></script>
+  </head>
+  <body>
+    
+  </body>
+
+
+<div class="chart-container">
+  <h3>Chart</h3>
+  <canvas id="myChart"></canvas>
 </div>
 
-
 <style>
-    html,
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0px;
+
+.charts .chart-container {
+  background-color: #313348;
+  padding: 15px;
+}
+.charts .chart-container h3 {
+  margin: 0 0 10px;
+  font-size: 17px;
+}
+.chrt3 .chart-container {
+  height: 350px;
+  padding: 15px;
+  margin-top: 25px;
 }
 
-#chartdiv {
-  width: 100%;
-  height: 100%;
-}
-
-#selector {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: rgba(255, 255, 255, 0.7);
-  padding: 10px;
-  font-size: 16px;
-}
-
-#selector input,
-#selector select {
-  padding: 5px;
-}
-
-.amcharts-map-line {
-	stroke-opacity: 0;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-  stroke-dasharray: 500%;
-  stroke-dasharray: 0 \0/;    /* fixes IE prob */
-  stroke-dashoffset: 0 \0/;   /* fixes IE prob */
-  -webkit-animation: am-draw 15s linear;
-  animation: am-draw 15s linear;
-}
-@-webkit-keyframes am-draw {
-    0% {
-        stroke-dashoffset: 500%;
-		stroke-opacity: 1
-	}
-    99% {
-        stroke-dashoffset: 0%;
-    }
-	100% {
-		stroke-opacity: 0
-	}
-}
-@keyframes am-draw {
-    0% {
-        stroke-dashoffset: 500%;
-		stroke-opacity: 1
-    }
-    99% {
-        stroke-dashoffset: 0%;
-    }
-	100% {
-		stroke-opacity: 0
-	}
-}
 </style>
+<!-- 
+<script>
+
+  Chart.defaults.global.animation.duration = 2000; // Animation duration
+  Chart.defaults.global.title.display = false; // Remove title
+  Chart.defaults.global.title.text = "Chart"; // Title
+  Chart.defaults.global.title.position = 'bottom'; // Title position
+  Chart.defaults.global.defaultFontColor = '#999'; // Font color
+  Chart.defaults.global.defaultFontSize = 10; // Font size for every label
+
+  // Chart.defaults.global.tooltips.backgroundColor = '#FFF'; // Tooltips background color
+  Chart.defaults.global.tooltips.borderColor = 'white'; // Tooltips border color
+  Chart.defaults.global.legend.labels.padding = 0;
+  Chart.defaults.scale.ticks.beginAtZero = true;
+  Chart.defaults.scale.gridLines.zeroLineColor = 'rgba(255, 255, 255, 0.1)';
+  Chart.defaults.scale.gridLines.color = 'rgba(255, 255, 255, 0.02)';
+
+  Chart.defaults.global.legend.display = false;
+
+  email_list= []
+  count_list =[]
+
+  async function getJson(){
+    var response = await fetch('/getBarData');
+    var jsondata = await response.json();
+
+    return jsondata
+}
+
+
+
+var chart = document.getElementById('myChart');
+    var myChart = new Chart(chart, {
+        type: 'bar',
+        data: {
+            labels: ['prince','rrrr','hxxs','sjkjsks','snkwnk'],
+            datasets: [{
+            label: "Count",
+            fill: false,
+            lineTension: 0,
+            data: [1,2,6,3,4],
+            pointBorderColor: "#4bc0c0",
+            borderColor: '#4bc0c0',
+            borderWidth: 2,
+            showLine: true,
+            }]
+        },
+    });
+
+// getJson().then( data => {
+//     count_list = data.counts
+//     email_list = data.emails
+//     var chart = document.getElementById('myChart');
+//     var myChart = new Chart(chart, {
+//         type: 'bar',
+//         data: {
+//             labels: count_list,
+//             datasets: [{
+//             label: "Count",
+//             fill: false,
+//             lineTension: 0,
+//             data: count_list,
+//             pointBorderColor: "#4bc0c0",
+//             borderColor: '#4bc0c0',
+//             borderWidth: 2,
+//             showLine: true,
+//             }]
+//         },
+//     });
+// })
+// setInterval(()=>{
+//   getJson().then( data => {
+//     count_list = data.counts
+//     email_list = data.emails
+//     var chart = document.getElementById('myChart');
+//     var myChart = new Chart(chart, {
+//         type: 'bar',
+//         data: {
+//           labels: count_list,
+//             datasets: [{
+//             label: "Count",
+//             fill: false,
+//             lineTension: 0,
+//             data: count_list,
+//             pointBorderColor: "#4bc0c0",
+//             borderColor: '#4bc0c0',
+//             borderWidth: 2,
+//             showLine: true,
+//             }]
+//         },
+//     });
+// })
+},10000)
+
+</script> -->
+
+
 
 <script>
-    // a list of available cities
-var cities = [ 
-{
-	"title": "Washington",
-	"latitude": 38.8921,
-	"longitude": -77.0241
-}, 
-{
-	"title": "Singapore",
-	"latitude": 1.2894,
-	"longitude": 103.8500
-}, 
-{
-  "title": "London",
-  "latitude": 51.5002,
-  "longitude": -0.1262
-},{
-  "title": "Tokyo",
-  "latitude": 35.6785,
-  "longitude": 139.6823
-}
-];
+  /*global $, console*/
+  /*
+    By Mostafa Omar
+    https://www.facebook.com/MostafaOmarIbrahiem
+  */
+  $(function () {
+  
+  'use strict';
+  
+  (function () {
+  
+    var aside = $('.side-nav'),
+  
+        showAsideBtn = $('.show-side-btn'),
+  
+        contents = $('#contents');
+  
+    showAsideBtn.on("click", function () {
+  
+      $("#" + $(this).data('show')).toggleClass('show-side-nav');
+  
+      contents.toggleClass('margin');
+  
+    });
+  
+    if ($(window).width() <= 767) {
+  
+      aside.addClass('show-side-nav');
+  
+    }
+    $(window).on('resize', function () {
+  
+      if ($(window).width() > 767) {
+  
+        aside.removeClass('show-side-nav');
+  
+      }
+  
+    });
+  
+    // dropdown menu in the side nav
+    var slideNavDropdown = $('.side-nav-dropdown');
+  
+    $('.side-nav .categories li').on('click', function () {
+  
+      $(this).toggleClass('opend').siblings().removeClass('opend');
+  
+      if ($(this).hasClass('opend')) {
+  
+        $(this).find('.side-nav-dropdown').slideToggle('fast');
+  
+        $(this).siblings().find('.side-nav-dropdown').slideUp('fast');
+  
+      } else {
+  
+        $(this).find('.side-nav-dropdown').slideUp('fast');
+  
+      }
+  
+    });
+  
+    $('.side-nav .close-aside').on('click', function () {
+  
+      $('#' + $(this).data('close')).addClass('show-side-nav');
+  
+      contents.removeClass('margin');
+  
+    });
+  
+  }());
+  
+  // Start chart
+  Chart.defaults.global.animation.duration = 2000; // Animation duration
+  Chart.defaults.global.title.display = false; // Remove title
+  Chart.defaults.global.title.text = "Chart"; // Title
+  Chart.defaults.global.title.position = 'bottom'; // Title position
+  Chart.defaults.global.defaultFontColor = '#999'; // Font color
+  Chart.defaults.global.defaultFontSize = 10; // Font size for every label
 
-// svg path for target icon
-var targetSVG = "M9,0C4.029,0,0,4.029,0,9s4.029,9,9,9s9-4.029,9-9S13.971,0,9,0z M9,15.93 c-3.83,0-6.93-3.1-6.93-6.93S5.17,2.07,9,2.07s6.93,3.1,6.93,6.93S12.83,15.93,9,15.93 M12.5,9c0,1.933-1.567,3.5-3.5,3.5S5.5,10.933,5.5,9S7.067,5.5,9,5.5 S12.5,7.067,12.5,9z";
+  // Chart.defaults.global.tooltips.backgroundColor = '#FFF'; // Tooltips background color
+  Chart.defaults.global.tooltips.borderColor = 'white'; // Tooltips border color
+  Chart.defaults.global.legend.labels.padding = 0;
+  Chart.defaults.scale.ticks.beginAtZero = true;
+  Chart.defaults.scale.gridLines.zeroLineColor = 'rgba(255, 255, 255, 0.1)';
+  Chart.defaults.scale.gridLines.color = 'rgba(255, 255, 255, 0.02)';
 
-var map = AmCharts.makeChart( "chartdiv", {
-  "type": "map",
-  "theme": "light",
-  addClassNames: true,
-  "imagesSettings": {
-    "rollOverColor": "#089282",
-    "rollOverScale": 3,
-    "selectedScale": 3,
-    "selectedColor": "#089282",
-    "color": "#13564e"
-  },
+  Chart.defaults.global.legend.display = false;
 
-  "areasSettings": {
-    "unlistedAreasColor": "#15A892"
-  },
-
-  "dataProvider": {
-    "map": "worldLow",
-    "images": [],
-    "lines": []
-  }
-} );
-
-// populate the city dropdown when the page loads
-AmCharts.ready( function() {
-  //var select = document.getElementById( 'cities' );
-  for ( var x in cities ) {
-    // var option = document.createElement( 'option' );
-    // option.value = x;
-    // option.text = cities[ x ].title;
-    // select.appendChild( option );
-    console.log(cities[x].title);
-    addCity(x);
-  }
-  setTimeout(function() {
-    drawLines();
-  }, 1000);
-} );
-
-// a function that actual adds the city to map
-function addCity(x) {
-
-  // get the city object and add additional attributes
-  var city = new AmCharts.MapImage();
-  city.title = cities[x].title;
-  city.latitude = cities[x].latitude;
-  city.longitude = cities[x].longitude;
-  city.svgPath = targetSVG;
-  city.zoomLevel = 5;
-  city.scale = 0.5;
-  city.chart = map;
-
-  // add city object to map
-  map.dataProvider.images.push( city );
-  city.validate();
-}
-
-var id =0;
-function drawLines() {
-  var line = new AmCharts.MapLine();
-  line.latitudes = [cities[0].latitude, cities[2].latitude, cities[1].latitude];
-  line.longitudes = [cities[0].longitude, cities[2].longitude, cities[1].longitude];
-  line.id = id++;
-  line.arc = -0.5;
-  line.alpha = 1;
-  line.chart = map;
-  map.dataProvider.lines.push(line);
-  line.validate();
-}
-</script>
+  // var chart = document.getElementById('myChart');
+  var chart = document.getElementById('myChart');
+    var myChart = new Chart(chart, {
+        type: 'bar',
+        data: {
+            labels: ['prince','rrrr','hxxs','sjkjsks','snkwnk'],
+            datasets: [{
+            label: "Count",
+            fill: false,
+            lineTension: 0,
+            data: [1,2,6,3,4],
+            pointBorderColor: "#4bc0c0",
+            borderColor: '#4bc0c0',
+            borderWidth: 2,
+            showLine: true,
+            }]
+        },
+    });
+  
+  
+  });
+  </script>
