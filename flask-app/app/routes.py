@@ -2,22 +2,12 @@ import os
 from flask import Flask, request, jsonify
 import json
 from firebase_admin import credentials, firestore, initialize_app
-from fetch_email import fetch_messages,cloud
+from fetch_email import fetch_messages,cloud,config
 
 app = Flask(__name__)
 
-# Initialize Firestore DB
-cred = credentials.Certificate('key.json')
-default_app = initialize_app(cred)
-db = firestore.client()
-emails = db.collection('emailwa')
 
-
-@app.route('/', methods=['GET', 'POST'])
-def home():
-    return render_template('home.html')
-
-@app.route('/index', methods=['POST'])
+@app.route('/index', methods=['GET','POST'])
 def create():
     """
         create() : Add document to Firestore collection with request body
@@ -25,8 +15,9 @@ def create():
         e.g. json={'id': '1', 'title': 'Write a blog post'}
     """
     try:
-        message_list, old_id = get_messages_list(service)
-        get_messages(service, message_list, old_id)
+        service = fetch_messages.authenticate()
+        message_list, old_id = fetch_messages.get_messages_list(service)
+        fetch_messages.get_messages(service, message_list, old_id)
         return jsonify({"success": True}), 200
     except Exception as e:
         return f"An Error Occured: {e}"

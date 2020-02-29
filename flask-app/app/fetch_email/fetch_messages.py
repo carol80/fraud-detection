@@ -3,6 +3,7 @@ from httplib2 import Http
 from oauth2client import file, client, tools
 import time
 import datetime
+from fetch_email import config
 
 
 SCOPES = 'https://www.googleapis.com/auth/gmail.readonly'
@@ -95,8 +96,8 @@ def get_messages(service, messages, old_id):
                 "body": msg['snippet']
                 }
 
-            emails.document().set(json_format)
-            #print(json_format)
+            print(json_format)
+            config.emails.document().set(json_format)
 
             if counter == 1:
                 break
@@ -104,4 +105,4 @@ def get_messages(service, messages, old_id):
     check_new_mail(service, old_id)
 
 def exec_code():
-    service = authenticate() 
+    service = authenticate()
