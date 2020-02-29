@@ -22,8 +22,8 @@ app = Flask(__name__)
 
 
 # train model
-model = pickle.load(open('models/PassiveAggressiveClassifier_with_TfidfVectorizer.pkl', 'rb'))
-vectorizer = pickle.load(open('vectors/TfidfVectorizer.pkl', 'rb'))
+model = pickle.load(open('classification/models/PassiveAggressiveClassifier_with_TfidfVectorizer.pkl', 'rb'))
+vectorizer = pickle.load(open('classification/vectors/TfidfVectorizer.pkl', 'rb'))
 
 @app.route('/', methods=['POST'])
 def main():
