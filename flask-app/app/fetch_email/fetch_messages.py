@@ -3,6 +3,7 @@ from httplib2 import Http
 from oauth2client import file, client, tools
 import time
 
+
 SCOPES = 'https://www.googleapis.com/auth/gmail.readonly'
 
 def check_new_mail(service, old_id):
@@ -71,15 +72,19 @@ def get_messages(service, messages, old_id):
         print ("Message snippets:")
         for message in messages:
             msg = service.users().messages().get(userId='me', id=message['id']).execute()
+            json_format = {
+                "time":"",
+                "from":"",
+                "to":"",
+                "body": msg['snippet']
+                }
+            emails.document().set(json_format)  
             print (msg['snippet'])
+
             if counter == 1:
                 break
             counter += 1
-
     check_new_mail(service, old_id)
 
 def exec_code():
     service = authenticate()
-
-    message_list, old_id = get_messages_list(service)
-    get_messages(service, message_list, old_id)
