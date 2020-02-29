@@ -1,5 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+flask_api/__pycache__/
+flask_api/app/__pycache__/
 *.py[cod]
 *$py.class
 
@@ -17,6 +19,7 @@ eggs/
 lib/
 lib64/
 parts/
+.vscode/
 sdist/
 var/
 wheels/
@@ -34,6 +37,7 @@ MANIFEST
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
+flask_api/app/credentials.txt
 
 # Unit test / coverage reports
 htmlcov/
@@ -103,6 +107,6 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-env/
-.vscode/
+
+
 
