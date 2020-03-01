@@ -14,10 +14,10 @@
     <aside class="side-nav" id="show-side-navigation1">
       <i class="fa fa-bars close-aside hidden-sm hidden-md hidden-lg" data-close="show-side-navigation1"></i>
       <div class="heading">
-        <img src="https://www.logopeople.in/blog/wp-content/uploads/2013/01/government-of-india.jpg" alt="">
+        <img src="https://cdn1.imggmi.com/uploads/2020/3/1/494ae48d461c56437e9bbb02c4928960-full.jpg" alt="">
         <div class="info">
-          <h3><a href="#"> Minister for Agriculture and Farmers’ Welfare</a></h3>
-          <p>Growing the Future!!</p>
+          <h3><a href="#"> Inertia </a></h3>
+          <p>yobro9594246827@gmail.com</p>
         </div>
       </div>
       <div class="search">
@@ -92,6 +92,14 @@
                 <i class="fa fa-envelope fa-fw bg-primary"></i>
                 <div class="info">
                  <h3 style="padding-top: 10px;">Chat</h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="box">
+                <i class="fa fa-file fa-fw danger"></i>
+                <div class="info">
+                  <h3 style="padding-top: 10px;">Chat Guidelines</h3>
                 </div>
               </div>
             </div>
@@ -900,7 +908,9 @@ async function getJson(){
     return jsondata
 }
 getJson().then( data => {
-    count_list = data.counts
+    // count_list = data.counts
+    email_s_list = data.emailSpam
+    email_h_list = data.emailHam
     email_list = data.emails
     var chart = document.getElementById('myChart');
     var myChart = new Chart(chart, {
@@ -908,14 +918,24 @@ getJson().then( data => {
         data: {
             labels: email_list,
             datasets: [{
-            label: "Count",
-            fill: false,
-            lineTension: 0,
-            data: count_list,
-            pointBorderColor: "#4bc0c0",
-            borderColor: '#4bc0c0',
-            borderWidth: 2,
-            showLine: true,
+              label: "SpamCount",
+              fill: false,
+              lineTension: 0,
+              data: email_s_list,
+              pointBorderColor: "#4bc0c0",
+              borderColor: '#4bc0c0',
+              borderWidth: 2,
+              showLine: true,
+            },
+            {
+              label: "HamCount",
+              fill: false,
+              lineTension: 0,
+              data: email_h_list,
+              pointBorderColor: "#4bc0c0",
+              borderColor: '#4bc0c0',
+              borderWidth: 2,
+              showLine: true,
             }]
         },
     });
