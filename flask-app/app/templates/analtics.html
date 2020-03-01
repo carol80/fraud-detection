@@ -978,70 +978,6 @@ setInterval(()=>{
 })
 },10000)
 
-// getJson().then( data =>{
-//     time_list = data.humidity
-//     crop_list = data.crops
-//     var Chart2 = document.getElementById('chart3').getContext('2d');
-//     var chart = new Chart(Chart2, {
-//       type: 'line',
-//       data: {
-//         labels: ["Rice", "Sugarcane","Jowar","Bajra","Cotton","Soyabean","Ragi"],
-//         datasets: [{
-//           label: "Humidity",
-//           backgroundColor: 'rgb(255, 99, 132)',
-//           borderColor: 'rgb(255, 79, 116)',
-//           borderWidth: 2,
-//           pointBorderColor: false,
-//           data: humid_list,
-//           fill: false,
-//           lineTension: 0,
-//         }]
-//       },
-
-//       // Configuration options
-//       options: {
-//         title: {
-//           display: false
-//         }
-//       }
-//     });
-//   })
-
-
-// setInterval(()=>{
-//   getJson().then( data =>{
-//     humid_list = data.humidity
-//     irri_list = data.irri
-    
-//     var Chart2 = document.getElementById('chart3').getContext('2d');
-//     var chart = new Chart(Chart2, {
-//       type: 'line',
-//       data: {
-//         labels: ["Rice", "Sugarcane","Jowar","Bajra","Soyabean","Ragi","Cotton"],
-//         datasets: [{
-//           label: "Humidity",
-//           backgroundColor: 'rgb(255, 99, 132)',
-//           borderColor: 'rgb(255, 79, 116)',
-//           borderWidth: 2,
-//           pointBorderColor: false,
-//           data: humid_list,
-//           fill: false,
-//           lineTension: 0,
-//         }]
-//       },
-
-//       // Configuration options
-//       options: {
-//         title: {
-//           display: false
-//         }
-//       }
-//     })
-//   })
-// },10000)
-
-
-
 async function getChart(){
     var response = await fetch('/chart2');
     var jsondata = await response.json();
@@ -1052,8 +988,8 @@ async function getChart(){
 getChart().then( data => {
   spam_list = data.spam
   ham_list = data.ham
-  var chart = document.getElementById('myChart2');
-  var myChart = new Chart(chart, {
+  var chart2 = document.getElementById('myChart2');
+  var myChart2 = new Chart(chart2, {
     type: 'line',
     data: {
       labels: ["Jan","Feb","Mar","Apr","May","Jun"],
@@ -1088,8 +1024,8 @@ setInterval(()=>{
   getChart().then( data => {
     spam_list = data.spam
     ham_list = data.ham
-    var chart = document.getElementById('chart2');
-    var myChart = new Chart(chart, {
+    var chart3 = document.getElementById('chart2');
+    var myChart3 = new Chart(chart3, {
       type: 'line',
       data: {
         labels: ["Jan","Feb","Mar","Apr","May","Jun","July","Aug","Sep","Oct","Nov","Dec"],
