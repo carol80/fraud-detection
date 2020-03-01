@@ -18,43 +18,208 @@ def create():
         return f"An Error Occured: {e}"
 
 
-def spam():
+def spamfun():
     data = config.db.collection(u"emailwa").where(u'spam',u'==',1).stream()
     return data
 
 @app.route('/spam', methods=['GET'])
 def get_spam():
-    response = spam()
-    my_dict = [ el.to_dict() for el in response ]
-    if response != "null":
-        return render_template('spam.html', saves=my_dict)
+    spam = spamfun()
+    my_spam = [ el.to_dict() for el in spam ]
+    if spam != "null":
+        return render_template('spam.html', saves=my_spam)
     else:
         return make_response(jsonify({'error': 'Not found'}), 404)
 
 
-def inbox():
+def inboxfun():
     data = config.db.collection(u"emailwa").where(u'spam',u'==',0).stream()
     return data
 
 @app.route('/inbox', methods=['GET'])
 def get_inbox():
-    response = inbox()
-    my_dict = [ el.to_dict() for el in response ]
-    print(my_dict)
-    if response != "null":
-        return render_template('inbox.html', saves=my_dict)
+    inbox = inboxfun()
+    my_ham = [ el.to_dict() for el in inbox ]
+    if inbox != "null":
+        return render_template('inbox.html', saves=my_ham)
     else:
         return make_response(jsonify({'error': 'Not found'}), 404)
 
-# def putMail(name):
-#     config.db.child(name).set("")
 
-# @app.route('/', methods=['POST'])
-# def create_mail():
-#     if not request.json or not 'mail' in request.json:
-#         abort(400)
-#     putMail(request.json['mail'])
-#     return jsonify({'catalogo': request.json['catalogo']}), 201
+@app.route('/analysis', methods=['GET'])
+def analysis():
+    ham = config.db.collection(u"emailwa").where(u'spam', u'==', 0).stream()
+    spam = config.db.collection(u"emailwa").where(u'spam', u'==', 1).stream()
+    ham_mails = [ el.to_dict() for el in ham ]
+    spam_mails = [ el.to_dict() for el in spam ]
+    totalspam = len(spam_mails)
+    totalham = len(ham_mails)
+    total = totalspam + totalham
+    chart1_from = []
+    chart1_count = []
+    chart1_cow = []
+    chart1_tow = []
+    chart1_to = []
+    chart1_frome = []
+
+    for i in range(0,totalspam):
+        chart1_to.append(spam_mails[i]['from'])
+    chart1_from = list(set(chart1_to))
+    print(chart1_from)
+
+    for i in range(0,totalham):
+        chart1_tow.append(ham_mails[i]['from'])
+    chart1_frome = list(set(chart1_tow))
+
+    chart1_count = [0]*len(chart1_from)
+    chart1_cow = [0]*len(chart1_frome)
+
+    unique_user = len(list(set(chart1_from + chart1_frome)))
+
+    for i in range(0,len(chart1_from)):
+        chart1_count[i] = chart1_to.count(chart1_to[i])
+
+    for i in range(0,len(chart1_frome)):
+        chart1_cow[i] = chart1_tow.count(chart1_tow[i])
+
+    dick = {
+        "totalspam":totalspam ,
+        "totalham":totalham,
+        "total":total,
+        "unique_user":unique_user
+    }
+    if dick != "null":
+        return render_template('analtics.html', data=dick)
+    else:
+        return make_response(jsonify({'error': 'Not found'}), 404)
+
+
+@app.route('/getData', methods=['GET'])
+def anal():
+    ham = config.db.collection(u"emailwa").where(u'spam', u'==', 0).stream()
+    spam = config.db.collection(u"emailwa").where(u'spam', u'==', 1).stream()
+    ham_mails = [ el.to_dict() for el in ham ]
+    spam_mails = [ el.to_dict() for el in spam ]
+    totalspam = len(spam_mails)
+    totalham = len(ham_mails)
+    chart1_from = []
+    chart1_frome = []
+    chart1_to = []
+    chart1_tow = []
+
+    for i in range(0,totalspam):
+        from_addr = spam_mails[i]['from']
+        list1 = from_addr.split(' ')
+        sender = list1[0]
+        chart1_to.append(sender)
+    chart1_from = list(set(chart1_to))
+    print(chart1_from)
+
+    for i in range(0,totalham):
+        from_addr = ham_mails[i]['from']
+        list1 = from_addr.split(' ')
+        sender = list1[0]
+        chart1_tow.append(sender)
+    chart1_frome = list(set(chart1_tow))
+
+    chart1_count = [0]*len(chart1_from)
+    chart1_cow = [0]*len(chart1_frome)
+
+    for i in range(0,len(chart1_from)):
+        chart1_count[i] = chart1_to.count(chart1_to[i])
+
+    for i in range(0,len(chart1_frome)):
+        chart1_cow[i] = chart1_tow.count(chart1_tow[i])
+
+    dick = {
+        "emails":chart1_frome,
+        "emailSpam":chart1_count,
+        "emailHam":chart1_cow
+    }
+    print(dick)
+    if dick != "null":
+        return dick
+    else:
+        return make_response(jsonify({'error': 'Not found'}), 404)
+
+
+@app.route('/heatmap', methods=['GET'])
+def doggy():
+    dataset = config.db.collection(u"emailwa").stream()
+    print(dataset)
+    mails = [ el.to_dict() for el in dataset ]
+    total = len(mails)
+    chart1_from = []
+    chart1_to = []
+
+    for i in range(0,total):
+        from_addr = mails[i]['from']
+        list1 = from_addr.split(' ')
+        sender = list1[0]
+        chart1_to.append(sender)
+    chart1_from = list(set(chart1_to))
+    print(chart1_from)
+
+    chart1_count = [0]*len(chart1_from)
+
+    for i in range(0,len(chart1_from)):
+        chart1_count[i] = chart1_to.count(chart1_to[i])
+
+
+    idata = {
+        "sender_name":chart1_from,
+        "date":chart1_count
+    }
+    print(idata)
+    if idata != "null":
+        return idata
+    else:
+        return make_response(jsonify({'error': 'Not found'}), 404)
+
+@app.route('/chart2', methods=['GET'])
+def chart():
+    dataset = config.db.collection(u"emailwa").stream()
+    print(dataset)
+    mails = [ el.to_dict() for el in dataset ]
+    total = len(mails)
+    month_dict = {}
+    spam_list = []
+    ham_list = []
+    
+    
+
+    for i in range(0,total):
+
+        date = mails[i]['date']
+        spam = mails[i]['spam']
+        month = date.split('-')[1]
+        index = int(month)
+        if not bool(month_dict.get(index)):
+            month_dict[index] = [spam]
+            print("-"*50, month_dict)
+        else:
+            month_dict[index].append(spam)
+            print("/"*50, month_dict)
+
+        
+    for i in range(1, len(month_dict.keys())+1):
+        
+        values = month_dict[i]
+        spam = values.count(1)
+        ham = values.count(0)
+        spam_list.append(spam)
+        ham_list.append(ham)
+
+    print(spam_list, ham_list)
+    idata = {
+        "spam":spam_list,
+        "ham":ham_list
+    }
+    print(idata)
+    if idata != "null":
+        return idata
+    else:
+        return make_response(jsonify({'error': 'Not found'}), 404)
 
 
 

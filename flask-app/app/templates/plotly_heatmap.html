@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<head>
+    <title>HeatMap</title>
+    <meta charset='utf-8'>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <div>
+        <h3>Plotly HeatMap</h3>
+        <div id='myDiv'></div>
+    </div>
+
+    <script>
+
+        spam = []
+        ham = []
+        person = []
+        person_2d = []
+        
+        async function getJson() {
+            var response = await fetch('/heatmap');
+            var jsondata = await response.json();
+
+            return jsondata
+        }
+
+        getJson().then(data => {
+
+            console.log(data)
+
+            spam = data.emailspam
+            ham = data.emailham
+            person = data.emails
+
+            for (i=0;i<spam.length;i++)
+            {
+                person_2d.push(person)
+            }
+
+            /* var xValues = ['A', 'B', 'C', 'D', 'E'];
+
+            var yValues = ['W', 'X', 'Y', 'Z'];
+
+            var zValues = [
+                [0.00, 0.00, 0.75, 0.75, 0.00],
+                [0.00, 0.00, 0.75, 0.75, 0.00],
+                [0.75, 0.75, 0.75, 0.75, 0.75],
+                [0.00, 0.00, 0.00, 0.75, 0.00]
+            ]; */
+
+            var colorscaleValue = [
+                [0, '#3D9970'],
+                [1, '#001f3f']
+            ];
+
+            var data = [{
+                x: spam,
+                y: ham,
+                z: person_2d,
+                type: 'heatmap',
+                colorscale: colorscaleValue,
+                showscale: false
+            }];
+
+            var layout = {
+                title: 'Annotated Heatmap',
+                annotations: [],
+                xaxis: {
+                    ticks: '',
+                    side: 'top'
+                },
+                yaxis: {
+                    ticks: '',
+                    ticksuffix: ' ',
+                    width: 700,
+                    height: 700,
+                    autosize: false
+                }
+            };
+
+            for (var i = 0; i < yValues.length; i++) {
+                for (var j = 0; j < xValues.length; j++) {
+                    var currentValue = zValues[i][j];
+                    if (currentValue != 0.0) {
+                        var textColor = 'white';
+                    } else {
+                        var textColor = 'black';
+                    }
+                    var result = {
+                        xref: 'x1',
+                        yref: 'y1',
+                        x: xValues[j],
+                        y: yValues[i],
+                        text: zValues[i][j],
+                        font: {
+                            family: 'Arial',
+                            size: 12,
+                            color: 'rgb(50, 171, 96)'
+                        },
+                        showarrow: false,
+                        font: {
+                            color: textColor
+                        }
+                    };
+                    layout.annotations.push(result);
+                }
+            }
+
+            Plotly.newPlot('myDiv', data, layout);
+        })
+    </script>
+
+</body>

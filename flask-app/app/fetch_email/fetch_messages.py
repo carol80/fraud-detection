@@ -78,7 +78,10 @@ def get_messages(service, messages, old_id):
         for message in messages:
             msg = service.users().messages().get(userId='me', id=message['id']).execute()
             
-            date_time = datetime.datetime.fromtimestamp(int(msg['internalDate'])/1000.0).strftime('%Y-%m-%d %H:%M:%S')
+            date = datetime.datetime.fromtimestamp(int(msg['internalDate'])/1000.0).strftime('%Y-%m-%d')
+            time = datetime.datetime.fromtimestamp(int(msg['internalDate'])/1000.0).strftime('%H:%M:%S')
+
+            print(date,time)
             
             header = msg['payload']['headers']
             
@@ -91,7 +94,8 @@ def get_messages(service, messages, old_id):
                     subj = obj['value']
 
             json_format = {
-                "time":date_time,
+                "time":time,
+                "date":date,
                 "from":from_addr,
                 "to":to_adr,
                 "subject":subj,
@@ -101,7 +105,7 @@ def get_messages(service, messages, old_id):
             print(json_format)
             config.emails.document().set(json_format)
 
-            if counter == 1:
+            if counter == 18:
                 break
             counter += 1
 
