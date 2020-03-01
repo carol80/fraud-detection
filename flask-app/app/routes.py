@@ -176,10 +176,10 @@ def doggy():
         chart1_tow.append(sender)
     chart1_frome = list(set(chart1_tow))
 
-    chart1_count = [0]*len(chart1_from)
+    chart1_count = [0]*len(chart1_frome)
     chart1_cow = [0]*len(chart1_frome)
 
-    for i in range(0,len(chart1_from)):
+    for i in range(0,len(chart1_frome)):
         chart1_count[i] = chart1_to.count(chart1_to[i])
 
     for i in range(0,len(chart1_frome)):

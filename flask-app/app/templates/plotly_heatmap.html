@@ -20,10 +20,11 @@
 
     <script>
 
-        $.getJSON("test.json", function (json) {
-            console.log(json);
-        });
-
+        spam = []
+        ham = []
+        person = []
+        person_2d = []
+        
         async function getJson() {
             var response = await fetch('/heatmap');
             var jsondata = await response.json();
@@ -35,14 +36,25 @@
 
             console.log(data)
 
-            var xValues = data.emails;
+            spam = data.emailspam
+            ham = data.emailham
+            person = data.emails
+
+            for (i=0;i<spam.length;i++)
+            {
+                person_2d.push(person)
+            }
+
+            /* var xValues = ['A', 'B', 'C', 'D', 'E'];
 
             var yValues = ['Fraudlent', 'Fair'];
 
             var zValues = [
                 [0.00, 0.00, 0.75, 0.75, 0.00],
-                [0.00, 0.00, 0.75, 0.75, 0.00]
-            ];
+                [0.00, 0.00, 0.75, 0.75, 0.00],
+                [0.75, 0.75, 0.75, 0.75, 0.75],
+                [0.00, 0.00, 0.00, 0.75, 0.00]
+            ]; */
 
             var colorscaleValue = [
                 [0, '#3D9970'],
@@ -50,9 +62,9 @@
             ];
 
             var data = [{
-                x: xValues,
-                y: yValues,
-                z: zValues,
+                x: spam,
+                y: ham,
+                z: person_2d,
                 type: 'heatmap',
                 colorscale: colorscaleValue,
                 showscale: false
