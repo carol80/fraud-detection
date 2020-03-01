@@ -1042,18 +1042,21 @@ setInterval(()=>{
 
 
 
-
+async function getChart(){
+    var response = await fetch('/chart2');
+    var jsondata = await response.json();
+    return jsondata
+}
 // console.log(Chart.defaults.global);
 
-getJson().then( data => {
+getChart().then( data => {
   spam_list = data.spam
   ham_list = data.ham
-  time_list = data.time
   var chart = document.getElementById('myChart2');
   var myChart = new Chart(chart, {
     type: 'line',
     data: {
-      labels: time_list,
+      labels: ["Jan","Feb","Mar","Apr","May","Jun","July","Aug","Sep","Oct","Nov","Dec"],
       datasets: [{
         label: "Spam",
         fill: false,
@@ -1082,15 +1085,14 @@ getJson().then( data => {
 
 
 setInterval(()=>{
-  getJson().then( data => {
+  getChart().then( data => {
     spam_list = data.spam
     ham_list = data.ham
-    time_list = data.time
-    var chart = document.getElementById('chart3');
+    var chart = document.getElementById('chart2');
     var myChart = new Chart(chart, {
       type: 'line',
       data: {
-        labels: time_list,
+        labels: ["Jan","Feb","Mar","Apr","May","Jun","July","Aug","Sep","Oct","Nov","Dec"],
         datasets: [{
           label: "Spam",
           fill: false,

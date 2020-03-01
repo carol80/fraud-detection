@@ -166,13 +166,54 @@ def doggy():
         chart1_count[i] = chart1_to.count(chart1_to[i])
 
 
-    dick = {
+    idata = {
         "sender_name":chart1_from,
         "date":chart1_count
     }
-    print(dick)
-    if dick != "null":
-        return dick
+    print(idata)
+    if idata != "null":
+        return idata
+    else:
+        return make_response(jsonify({'error': 'Not found'}), 404)
+
+@app.route('/chart2', methods=['GET'])
+def chart():
+    dataset = config.db.collection(u"emailwa").stream()
+    print(dataset)
+    mails = [ el.to_dict() for el in dataset ]
+    total = len(mails)
+    month_dict = {}
+    spam_list = []
+    ham_list = []
+    
+    
+
+    for i in range(0,total):
+
+        date = mails[i]['date']
+        spam = mails[i]['spam']
+        month = date.split('-')[1]
+        index = int(month)
+        if month_dict[index] == None:
+            month_dict[index] = [spam]
+        else:
+            month_dict[index].append(spam)
+        
+    for i in range(1,13):
+        values = month_dict[i]
+        spam = values.count(1)
+        ham = values.count(0)
+        spam_list.append(spam)
+        ham_list.append(ham)
+
+
+    idata = {
+        "spam":spam_list,
+        "ham":ham_list
+    }
+    print(idata)
+    if idata != "null":
+        return idata
     else:
         return make_response(jsonify({'error': 'Not found'}), 404)
 
