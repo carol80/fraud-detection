@@ -7,7 +7,6 @@ password = "thetimesofindia"
 e = pd.read_excel("Email.xlsx")
 emails = e['Emails'].values
 email = 'abdulshahlatiiffkhamura@gmail.com'
-print(emails,email)
 server = smtplib.SMTP("smtp.gmail.com", 587)
 server.starttls()
 server.login(SenderAddress, password)
