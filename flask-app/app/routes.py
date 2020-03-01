@@ -212,16 +212,23 @@ def chart():
         spam = [mails[i]['spam']]
         month = date.split('-')[1]
         index = int(month)
-        month_dict.append(spam)
+        if not bool(month_dict.get(index)):
+            month_dict[index] = [spam]
+            print("-"*50, month_dict)
+        else:
+            month_dict[index].append(spam)
+            print("/"*50, month_dict)
+
         
-    for i in range(0,12):
+    for i in range(1, len(month_dict.keys())+1):
+        
         values = month_dict[i]
         spam = values.count(1)
         ham = values.count(0)
         spam_list.append(spam)
         ham_list.append(ham)
 
-
+    print(spam_list, ham_list)
     idata = {
         "spam":spam_list,
         "ham":ham_list
