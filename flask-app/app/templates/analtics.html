@@ -91,7 +91,7 @@
               <div class="box">
                 <i class="fa fa-file fa-fw bg-primary"></i>
                 <div class="info">
-                 <h3 style="padding-top: 10px;">Spam Emails</h3>
+                 <h3 style="padding-top: 10px;">Spam Emails: {{ data.totalspam }}</h3>
                 </div>
               </div>
             </div>
@@ -99,7 +99,7 @@
               <div class="box">
                 <i class="fa fa-envelope fa-fw danger"></i>
                 <div class="info">
-                  <h3 style="padding-top: 10px;">Ham Emails</h3>
+                  <h3 style="padding-top: 10px;">Ham Emails: {{ data.totalham }}</h3>
                 </div>
               </div>
             </div>
@@ -107,7 +107,7 @@
               <div class="box">
                 <i class="fa fa-envelope fa-fw danger"></i>
                 <div class="info">
-                  <h3 style="padding-top: 10px;">Total Mails</h3>
+                  <h3 style="padding-top: 10px;">Total Mails: {{ data.total }}</h3>
                 </div>
               </div>
             </div>
@@ -146,17 +146,10 @@
               <div class="col-md-3">
                 <div class="box danger">
                   <i class="fa fa-user-o"></i>
-                  <h3>12</h3>
-                  <p class="lead">Total Unique Users</p>
+                  <h3>{{ data.unique_user }}</h3>
+                  <p class="lead">Total Unique User</p>
                 </div>
               </div>
-              <!-- <div class="col-md-3">
-                <div class="box warning">
-                  <i class="fa fa-shopping-cart"></i>
-                  <h3>5,154</h3>
-                  <p class="lead">Area Of Land Owned</p>
-                </div>
-              </div> -->
             </div>
           </div>
         </section>
@@ -900,16 +893,59 @@ Chart.defaults.global.legend.display = false;
 
 var email_list =[]
 var count_list =[]
+var email_s_list =[]
+var email_h_list =[]
+var spam_list=[]
+var ham_list=[]
+var time_list=[]
+
 
 async function getJson(){
     var response = await fetch('/getData');
     var jsondata = await response.json();
-
     return jsondata
 }
 getJson().then( data => {
     // count_list = data.counts
     email_s_list = data.emailSpam
+    console.log(data.emailHam)
+    
+    email_h_list = data.emailHam
+    console.log(email_h_list)
+    email_list = data.emails
+    console.log(email_list)
+    var chart = document.getElementById('myChart');
+    var myChart = new Chart(chart, {
+        type: 'bar',
+        data: {
+            labels: email_list,
+            datasets: [{
+              label: "SpamCount",
+              fill: false,
+              lineTension: 0,
+              data: email_s_list,
+              pointBorderColor: "#4bc0c0",
+              borderColor: '#4bc0c0',
+              borderWidth: 2,
+              showLine: true,
+            },
+            {
+              label: "HamCount",
+              fill: false,
+              lineTension: 0,
+              data: email_h_list,
+              pointBorderColor: "#4bc0c0",
+              borderColor: '#fff',
+              borderWidth: 2,
+              showLine: true,
+            }]
+        },
+    });
+})
+setInterval(()=>{
+  getJson().then( data => {
+    email_s_list = data.emailSpam
+    
     email_h_list = data.emailHam
     email_list = data.emails
     var chart = document.getElementById('myChart');
@@ -933,31 +969,9 @@ getJson().then( data => {
               lineTension: 0,
               data: email_h_list,
               pointBorderColor: "#4bc0c0",
-              borderColor: '#4bc0c0',
+              borderColor: '#fff',
               borderWidth: 2,
               showLine: true,
-            }]
-        },
-    });
-})
-setInterval(()=>{
-  getJson().then( data => {
-    count_list = data.counts
-    email_list = data.emails
-    var chart = document.getElementById('myChart');
-    var myChart = new Chart(chart, {
-        type: 'bar',
-        data: {
-            labels: email_list,
-            datasets: [{
-            label: "Count",
-            fill: false,
-            lineTension: 0,
-            data: count_list,
-            pointBorderColor: "#4bc0c0",
-            borderColor: '#4bc0c0',
-            borderWidth: 2,
-            showLine: true,
             }]
         },
     });
