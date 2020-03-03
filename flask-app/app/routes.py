@@ -200,7 +200,7 @@ def chart():
     dataset = config.db.collection(u"emailwa").stream()
     mails = [ el.to_dict() for el in dataset ]
     total = len(mails)
-    month_dict = []
+    month_dict = {}
     spam_list = []
     ham_list = []
     
@@ -209,7 +209,7 @@ def chart():
     for i in range(0,total):
 
         date = mails[i]['date']
-        spam = [mails[i]['spam']]
+        spam = mails[i]['spam']
         month = date.split('-')[1]
         index = int(month)
         if not bool(month_dict.get(index)):
