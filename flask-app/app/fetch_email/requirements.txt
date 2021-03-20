@@ -14,7 +14,7 @@ idna==2.9
 ipaddress==1.0.23
 IPy==1.0
 itsdangerous==1.1.0
-Jinja2==2.11.1
+Jinja2==2.11.3
 mail-parser==3.12.0
 MarkupSafe==1.1.1
 maxminddb==1.5.2
